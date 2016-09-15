@@ -3,3 +3,208 @@
  *
  * This file will be loaded after all other theme stylesheets.
  */
+
+/* heading: set font */ 
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Karla", sans-serif;
+}
+
+/* dropdown input: set outlook */
+select {
+  /* fix bug of firefox for dropdown arrow */
+  -moz-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
+
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #f9f9f9;
+  background-image: url(https://store.kanssani.fi/wp-content/uploads/2016/08/dropdown.png);
+  background-position: right 8px center;
+  background-repeat: no-repeat;
+  border: 1px solid #aaaaaa;
+  padding: 0px 35px 0px 10px;
+}
+
+/* widget seperator: change outlook */
+.widget:before {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.3);
+  content: '';
+}
+
+/* parallax hero: remove by default */
+.page-template-template-homepage .site-main section.sph-hero {
+  display: none;
+}
+
+/* product loop: remove decoration on the image */
+ul.products li.product a:first-child:before {
+  display: none;
+}
+
+/* variable product: beautify table */
+.single-product div.product table.variations {
+  border-top: initial;
+}
+
+/* price filter button: set outlook */
+.widget_price_filter .price_slider_amount button {
+  background-color: #716558;
+  border-color: #716558;
+}
+
+.widget_price_filter .price_slider_amount button:hover {
+  background-color: #8a7e71;
+  border-color: #8a7e71;
+}
+
+/* paypal button: remove it on cart page */
+.wcppec-checkout-buttons {
+  display: none;
+}
+
+/* shipping note: add padding to beautify note */
+div.shipping_method_notes {
+  padding: 0.2em 1em 0.2em;
+}
+
+/* posti shipping: change outlook */
+.smartpost-posti-wrap-sz, 
+.smartpost-posti-wrap {
+  display: none;
+}
+
+.smartpost_posti_noutopiste-result-sz,
+.smartpost_posti_noutopiste-result {
+  width: 100%;
+  padding: 0px 35px 0px 10px;
+}
+
+/* payment gateway: increase line height to accept bigger image */
+#payment .payment_methods li label {
+  line-height: 35px;
+}
+
+#payment .payment_methods li img {
+  max-height: 35px;
+}
+
+/* footer widget: backgournd color and alignment */
+footer .footer-widgets {
+  background-color: #f8f8f8;
+}
+
+footer .footer-widgets .widget-title {
+  text-align: center;
+}
+
+footer .footer-widgets .textwidget {
+  display: table;
+  margin: auto;
+}
+
+/* newsletter: all styles */
+.widget_wysija_cont {
+  text-align: center;
+}
+
+.widget_wysija .wysija-paragraph {
+  margin: 0;
+}
+
+.widget_wysija input[name="wysija[user][email]"] {
+  width: 20em;
+  margin: auto;
+  text-align: center;
+}
+
+.widget_wysija .wysija-submit-field {
+  display: inline-block;
+}
+
+.widget_wysija .formErrorContent { 
+  background-color: #ffffff;
+  color: red; 
+}
+
+.wysija-msg .allmsgs {
+  visibility: hidden;
+}
+
+.wysija-msg .allmsgs .updated {
+  visibility: visible;
+  font-size: 1.5em;
+  border-style: none;
+  background-color: inherit;
+}
+
+/* checkout create account: reposition note and hide description */
+.woocommerce-billing-fields .create-account-notes {
+  margin-top: -1.7em;
+  margin-left: 1em;
+}
+
+.woocommerce-billing-fields .create-account p:first-child {
+  display: none;
+}
+
+/* error 404: fix width (bug of "Storefront WooCommerce Customiser") */
+.error404 .content-area {
+  width: 100%;
+}
+
+/* sharing: increase top margin */
+#content div.sharedaddy, #main div.sharedaddy, div.sharedaddy {
+  margin-top: 2em;
+}
+
+@media screen and (min-width: 768px) {
+  /* header and footer: hide decorations */
+  .woocommerce-active .site-header .col-full:before,
+  .site-header .col-full:before,
+  .site-footer .col-full:after {
+    visibility: hidden;
+  }
+
+  /* header cart: change icon and its size */
+  .site-header-cart .cart-contents:after {
+    content: "\f07a";
+    font-size: 1.3em;
+    margin-top: -0.2em;
+  }
+
+  /* navigation bar: set color to white */
+  div.storefront-primary-navigation {
+    background-color: #ffffff;
+  }
+
+  /* parallax hero: show and small adjustments */
+  .page-template-template-homepage .site-main section.sph-hero {
+    display: block;
+  }
+
+  .sph-hero h1, .sprh-hero h1 {
+    letter-spacing: 3px;
+  }
+
+  .overlay.animated h1:after {
+    top: 0.152em;  //half of top padding of h1>span 0.304em
+  }
+
+  .sph-hero .sph-hero-content p {
+    font-family: "Karla", sans-serif;
+  }
+
+  /* related and upsell: set to 4 columns */
+  .storefront-full-width-content.single-product .related ul.products li.product, 
+  .storefront-full-width-content.single-product .upsells ul.products li.product {
+    margin-right: 4%;
+    position: relative;
+    width: 22%;
+  }
+  
+  /* login: adjust width */
+  form.login {
+    width: 33%;
+  }
+}
