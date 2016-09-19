@@ -5,10 +5,12 @@
 #
 # Note: This script requires kanssani configuration at ~/.ssh/config
 
-ERROR="error.log"
 SERVER="kanssani"
 CUSTOM_PATH="public_html/store/wp-content/plugins/theme-customisations-master"
 THEME_PATH="public_html/store/wp-content/themes/stationery"
+
+SCP="scp -q"
+ERROR="error.log"
 
 # remove error log
 rm -f $ERROR
@@ -48,20 +50,21 @@ for file in $files; do
     cmd=
     if [[ $file =~ ^custom/ ]]; then
         dir_name=$CUSTOM_PATH/`dirname $file`
-        cmd="ssh $SERVER mkdir -p $dir_name && scp $file $SERVER:$dir_name"
+        cmd="ssh $SERVER mkdir -p $dir_name && $SCP $file $SERVER:$dir_name"
     elif [[ $file =~ ^theme-template/ ]]; then
-        cmd="scp $file $SERVER:$THEME_PATH"
+        cmd="$SCP $file $SERVER:$THEME_PATH"
     fi
 
+    printf "$file... "
     if [[ -n $cmd ]]; then
         sh -c "$cmd" 2>> $ERROR
         if [[ $? -ne 0 ]]; then
-            echo "$file... Err."
+            echo "Err."
         else
-            echo "$file... OK."
+            echo "OK."
         fi
     else
-        echo "$file... No."
+        echo "No."
     fi
 done
 
