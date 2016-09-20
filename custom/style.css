@@ -23,13 +23,19 @@ select {
   background-position: right 8px center;
   background-repeat: no-repeat;
   border: 1px solid #aaaaaa;
-  padding: 0px 35px 0px 10px;
+  padding: 2px 35px 2px 10px;
+  line-height: normal;
 }
 
-/* widget seperator: change outlook */
+/* widget: change outlook */
 .widget:before {
   border-bottom: 2px solid rgba(0, 0, 0, 0.3);
   content: '';
+}
+
+.widget .widget-title, .widget .widgettitle {
+  border: none;
+  padding: 0;
 }
 
 /* parallax hero: remove by default */
@@ -77,7 +83,7 @@ div.shipping_method_notes {
 .smartpost_posti_noutopiste-result-sz,
 .smartpost_posti_noutopiste-result {
   width: 100%;
-  padding: 0px 35px 0px 10px;
+  padding: 2px 35px 2px 10px;
 }
 
 /* payment gateway: increase line height to accept bigger image */
@@ -89,11 +95,7 @@ div.shipping_method_notes {
   max-height: 35px;
 }
 
-/* footer widget: backgournd color and alignment */
-footer .footer-widgets {
-  background-color: #f8f8f8;
-}
-
+/* footer widget: alignment */
 footer .footer-widgets .widget-title {
   text-align: center;
 }

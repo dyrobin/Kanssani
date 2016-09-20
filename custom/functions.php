@@ -11,6 +11,30 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
+/********************** Google Analytics **********************/
+/**
+ * Add google analytics script
+ */
+add_action( 'wp_footer', 'kanssani_ga_script');
+if ( ! function_exists( 'kanssani_ga_script' ) ) {
+
+    function kanssani_ga_script() {
+        echo "
+            <script>
+              (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-84358898-1', 'auto');
+              ga('send', 'pageview');
+
+            </script>
+        ";
+    }
+}
+
+
 /************************ Header Part ************************/
 /**
  * Add "Log In/Out" item to navigation menu 
@@ -63,6 +87,22 @@ if ( ! function_exists( 'kanssani_copyright_text' ) ) {
 add_filter( 'storefront_credit_link', '__return_false' );
 
 
+/************************ Archive Page ************************/
+/**
+ * Change tag cloud widget arguments
+ */
+add_filter( 'woocommerce_product_tag_cloud_widget_args', 'kanssani_tag_cloud_widget_args' );
+if ( ! function_exists('kanssani_tag_cloud_widget_args') ) {
+
+    function kanssani_tag_cloud_widget_args ( $args ) {
+        $args['smallest'] = 5;
+        $args['largest'] = 20;
+
+        return $args;
+    }
+}
+
+
 /************************ Procudt Page ************************/
 /**
  * Change upsell columns 
@@ -71,9 +111,9 @@ add_filter( 'woocommerce_upsell_display_args', 'kanssani_upsell_columns');
 if ( ! function_exists( 'kanssani_upsell_columns' ) ) {
 
     function kanssani_upsell_columns ( $args ) {
-        $args[columns] = 4;
+        $args['columns'] = 4;
 
-        return args;
+        return $args;
     }
 }
 
