@@ -85,7 +85,7 @@ for file in $files; do
             echo ""
             echo $cmd
         else
-            sh -c "$cmd" 2>&1 >> $ERROR_LOG
+            sh -c "$cmd" >> $ERROR_LOG 2>&1
             if [[ $? -ne 0 ]]; then
                 echo "Err."
                 error=1
@@ -103,7 +103,7 @@ if [[ -z $cmd ]]; then
 fi
 
 # update timestamp if no errors
-if [[ -z $error ]]; then
+if [[ -z $error ]] && [[ -z $dry_run ]]; then
     touch $TIMESTAMP
 elif [[ -f $ERROR_LOG ]]; then
     echo ""
