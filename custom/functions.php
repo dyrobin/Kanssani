@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Add google analytics script
  */
-add_action( 'wp_footer', 'kanssani_ga_script');
+add_action( 'wp_footer', 'kanssani_ga_script' );
 if ( ! function_exists( 'kanssani_ga_script' ) ) {
 
     function kanssani_ga_script() {
@@ -31,6 +31,19 @@ if ( ! function_exists( 'kanssani_ga_script' ) ) {
 
             </script>
         ";
+    }
+}
+
+
+/************************ Preloader **************************/
+/**
+ * Add Preloader gif
+ */
+add_action( 'storefront_before_header', 'kanssani_preloader' );
+if ( ! function_exists( 'kanssani_preloader' ) ) {
+    
+    function kanssani_preloader() {
+        echo '<div id="wptime-plugin-preloader"></div>';
     }
 }
 
@@ -107,7 +120,7 @@ if ( ! function_exists('kanssani_tag_cloud_widget_args') ) {
 /**
  * Change upsell columns 
  */
-add_filter( 'woocommerce_upsell_display_args', 'kanssani_upsell_columns');
+add_filter( 'woocommerce_upsell_display_args', 'kanssani_upsell_columns' );
 if ( ! function_exists( 'kanssani_upsell_columns' ) ) {
 
     function kanssani_upsell_columns ( $args ) {
@@ -210,6 +223,40 @@ if ( ! function_exists( 'kanssani_newsletter_checkbox' ) ) {
 add_filter( 'storefront_sticky_order_review', '__return_false');
 
 /**
+ * Hide other shipping methods if a free shipping coupon is applied
+ */
+add_filter( 'woocommerce_package_rates', 'kanssani_hide_other_shipping_methods', 100 );
+if ( ! function_exists( 'kanssani_hide_other_shipping_methods' )) {
+    
+    function kanssani_hide_other_shipping_methods( $rates ) {
+        $hide = false;
+        $free = array();
+
+        // check if there is a free shipping coupon that has been applied
+        $coupons = WC()->cart->get_coupons();
+        foreach ( $coupons as $coupon ) {
+            if ( $coupon->enable_free_shipping()) {
+                $hide = true;
+                break;
+            }
+        }
+
+        // remove other shipping methods if needed
+        if ( $hide ) {
+            foreach ( $rates as $rate_id => $rate ) {
+                if ( 'free_shipping' === $rate->method_id &&
+                     'Free Shipping (with Coupon)' === $rate->label ) {
+                    $free[ $rate_id ] = $rate;
+                    break;
+                }
+            }
+        }
+
+        return ! empty( $free ) ? $free : $rates;
+    }
+}
+
+/**
  * Add shipping methond notes
  * @todo add __() to each string for language support
  */
@@ -220,7 +267,8 @@ if ( ! function_exists( 'kanssani_shipping_method_notes' ) ) {
         echo '<div class="shipping_method_notes '. $method->method_id .'">';
         switch ($method->method_id) {
             case 'free_shipping':
-                echo 'We guarantee a free delivery within Otaniemi area within 24 hour on weekdays.';
+                if ("Free Delivery in Otaniemi" === $method->label)
+                    echo 'We guarantee a free delivery within Otaniemi area within 24 hour on weekdays.';
                 break;
             case 'local_pickup':
                 echo 'Pick-up from office shop at Room 246, Vuorimiehentie 2, Espoo. &nbsp;';
@@ -248,7 +296,7 @@ if ( ! function_exists( 'kanssani_shipping_method_notes' ) ) {
 /**
  * Change payment gateway icon 
  */
-add_filter( 'woocommerce_gateway_icon', 'kanssani_gateway_icon', 10, 2);
+add_filter( 'woocommerce_gateway_icon', 'kanssani_gateway_icon', 10, 2 );
 if ( ! function_exists( 'kanssani_gateway_icon' ) ) {
 
     function kanssani_gateway_icon ( $icon_html, $method_id ) {
