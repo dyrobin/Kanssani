@@ -1,2 +1,3 @@
 .timestamp
 *.log
+.DS_Store

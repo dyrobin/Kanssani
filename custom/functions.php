@@ -223,32 +223,18 @@ if ( ! function_exists( 'kanssani_newsletter_checkbox' ) ) {
 add_filter( 'storefront_sticky_order_review', '__return_false');
 
 /**
- * Hide other shipping methods if a free shipping coupon is applied
+ * Hide other shipping methods if a free shipping method exists and its label (title) matches "Free Shipping"
  */
 add_filter( 'woocommerce_package_rates', 'kanssani_hide_other_shipping_methods', 100 );
 if ( ! function_exists( 'kanssani_hide_other_shipping_methods' )) {
     
     function kanssani_hide_other_shipping_methods( $rates ) {
-        $hide = false;
         $free = array();
-
-        // check if there is a free shipping coupon that has been applied
-        $coupons = WC()->cart->get_coupons();
-        foreach ( $coupons as $coupon ) {
-            if ( $coupon->enable_free_shipping()) {
-                $hide = true;
+        foreach ( $rates as $rate_id => $rate ) {
+            if ( 'free_shipping' === $rate->method_id &&
+                 'Free Shipping' === $rate->label ) {
+                $free[ $rate_id ] = $rate;
                 break;
-            }
-        }
-
-        // remove other shipping methods if needed
-        if ( $hide ) {
-            foreach ( $rates as $rate_id => $rate ) {
-                if ( 'free_shipping' === $rate->method_id &&
-                     'Free Shipping (with Coupon)' === $rate->label ) {
-                    $free[ $rate_id ] = $rate;
-                    break;
-                }
             }
         }
 

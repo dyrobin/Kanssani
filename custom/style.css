@@ -160,6 +160,11 @@ footer .footer-widgets .textwidget {
   margin-top: 2em;
 }
 
+/* top bar: center widget text */
+.woa-top-bar .widget .textwidget {
+  text-align: center;
+}
+
 @media screen and (min-width: 768px) {
   /* header and footer: hide decorations */
   .woocommerce-active .site-header .col-full:before,
