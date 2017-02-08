@@ -25,6 +25,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @package	Theme_Customisations
  */
 final class Theme_Customisations {
+        
+        /* For cache update */
+        private static $version = "1.0.1";
 
 	/**
 	 * Set up the plugin
@@ -50,7 +53,7 @@ final class Theme_Customisations {
 	 * @return void
 	 */
 	public function theme_customisations_css() {
-		wp_enqueue_style( 'custom-css', plugins_url( '/custom/style.css', __FILE__ ) );
+		wp_enqueue_style( 'custom-css', plugins_url( '/custom/style.css', __FILE__ ), array(), self::$version );
 	}
 
 	/**
@@ -59,7 +62,7 @@ final class Theme_Customisations {
 	 * @return void
 	 */
 	public function theme_customisations_js() {
-		wp_enqueue_script( 'custom-js', plugins_url( '/custom/custom.js', __FILE__ ), array( 'jquery' ) );
+		wp_enqueue_script( 'custom-js', plugins_url( '/custom/custom.js', __FILE__ ), array( 'jquery' ), self::$version );
 	}
 
 	/**
