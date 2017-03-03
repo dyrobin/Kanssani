@@ -35,6 +35,23 @@ if ( ! function_exists( 'kanssani_ga_script' ) ) {
 }
 
 
+/************************ WC Shortcodes ************************/
+/**
+ * Add "orderby price" to WC Shortcode
+ */
+add_filter( 'woocommerce_shortcode_products_query', 'kanssani_shortcode_products_query' );
+if ( ! function_exists('kanssani_shortcode_products_query') ){
+    
+    function kanssani_shortcode_products_query ( $query_args ) {
+        if ( $query_args['orderby'] == "price" ) {
+            $query_args['orderby'] = 'meta_value_num';
+            $query_args['meta_key'] = '_price';
+        }
+        return $query_args;
+    }
+}
+
+
 /************************ Preloader **************************/
 /**
  * Add Preloader gif
@@ -89,6 +106,7 @@ if ( ! function_exists( 'kanssani_newsletter_form' ) ) {
  */
 add_filter( 'storefront_copyright_text', 'kanssani_copyright_text' );
 if ( ! function_exists( 'kanssani_copyright_text' ) ) {
+
     function kanssani_copyright_text( $content ) {
         return 'Copyright &copy; Kanssani ' . date( 'Y' );
     }
