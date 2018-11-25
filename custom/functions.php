@@ -41,7 +41,7 @@ if ( ! function_exists( 'kanssani_ga_script' ) ) {
  */
 add_filter( 'woocommerce_shortcode_products_query', 'kanssani_shortcode_products_query' );
 if ( ! function_exists('kanssani_shortcode_products_query') ){
-    
+
     function kanssani_shortcode_products_query ( $query_args ) {
         if ( $query_args['orderby'] == "price" ) {
             $query_args['orderby'] = 'meta_value_num';
@@ -58,7 +58,7 @@ if ( ! function_exists('kanssani_shortcode_products_query') ){
  */
 add_action( 'storefront_before_header', 'kanssani_preloader' );
 if ( ! function_exists( 'kanssani_preloader' ) ) {
-    
+
     function kanssani_preloader() {
         echo '<div id="wptime-plugin-preloader"></div>';
     }
@@ -67,18 +67,18 @@ if ( ! function_exists( 'kanssani_preloader' ) ) {
 
 /************************ Header Part ************************/
 /**
- * Add "Log In/Out" item to navigation menu 
+ * Add "Log In/Out" item to navigation menu
  */
 add_filter( 'wp_nav_menu_items', 'kanssani_nav_menu_loginout', 10, 2 );
 if ( ! function_exists( 'kanssani_nav_menu_loginout' ) ) {
 
     function kanssani_nav_menu_loginout( $items, $args ) {
         if (is_user_logged_in() && $args->theme_location == 'secondary') {
-            $items .= '<li><a href="' . wp_logout_url( get_home_url() ) . '">' 
+            $items .= '<li><a href="' . wp_logout_url( get_home_url() ) . '">'
                         . __('Log Out', 'kanssani') . '</a></li>';
         }
         elseif (!is_user_logged_in() && $args->theme_location == 'secondary') {
-            $items .= '<li><a href="' . get_permalink( wc_get_page_id( 'myaccount' ) ) . '">' 
+            $items .= '<li><a href="' . get_permalink( wc_get_page_id( 'myaccount' ) ) . '">'
                         . __('Log In', 'kanssani') . '</a></li>';
         }
         return $items;
@@ -136,7 +136,7 @@ if ( ! function_exists('kanssani_tag_cloud_widget_args') ) {
 
 /************************ Procudt Page ************************/
 /**
- * Change upsell columns 
+ * Change upsell columns
  */
 add_filter( 'woocommerce_upsell_display_args', 'kanssani_upsell_columns' );
 if ( ! function_exists( 'kanssani_upsell_columns' ) ) {
@@ -164,12 +164,13 @@ if ( ! function_exists( 'kanssani_create_account_note' ) ) {
 /**
  * Checked create account by default
  */
-add_filter( 'woocommerce_create_account_default_checked', '__return_true' ); 
+add_filter( 'woocommerce_create_account_default_checked', '__return_true' );
 
 /**
  * Change checkout fields
  *  - Remove billing->billing_company field
  *  - Remove shipping->shipping_company field
+ *  - Require billing->billing_phone field
  *  - Add account->confirm_password  field
  *  - Add order->newsletter field
  */
@@ -178,10 +179,14 @@ add_action( 'woocommerce_after_checkout_validation', 'kanssani_validation_confir
 add_action( 'woocommerce_checkout_order_processed', 'kanssani_newsletter_checkbox', 10, 2 );
 
 if ( ! function_exists( 'kanssani_checkout_fields' ) ) {
-    
+
     function kanssani_checkout_fields( $fields ) {
         unset($fields['billing']['billing_company']);
+
         unset($fields['shipping']['shipping_company']);
+
+        $fields['billing']['billing_phone']['required'] = true;
+
         $fields['account']['confirm_password'] = array(
             'type'          => 'password',
             'label'         => __('Confirm Password', 'kanssani'),
@@ -200,7 +205,7 @@ if ( ! function_exists( 'kanssani_checkout_fields' ) ) {
 }
 
 if ( ! function_exists( 'kanssani_validation_confirm_password' ) ) {
-    
+
     function kanssani_validation_confirm_password( $posted ) {
         $checkout = WC()->checkout;
         if ( ! is_user_logged_in() && ( $checkout->must_create_account || ! empty( $posted['createaccount'] ) ) ) {
@@ -208,7 +213,7 @@ if ( ! function_exists( 'kanssani_validation_confirm_password' ) ) {
                 wc_add_notice( __( 'Passwords do not match.', 'kanssani' ), 'error' );
             }
         }
-    }    
+    }
 }
 
 if ( ! function_exists( 'kanssani_newsletter_checkbox' ) ) {
@@ -222,13 +227,13 @@ if ( ! function_exists( 'kanssani_newsletter_checkbox' ) ) {
                 'lastname'  => $posted['billing_last_name'],
                 'status'    => 1
             );
- 
+
             $data_subscriber = array(
                 'user'      => $user_data,
                 // list_id is hard-coded here
                 'user_list' => array('list_ids' => array(1))
             );
-            
+
             $helper_user = WYSIJA::get('user','helper');
             $helper_user->addSubscriber($data_subscriber);
         }
@@ -245,7 +250,7 @@ add_filter( 'storefront_sticky_order_review', '__return_false');
  */
 add_filter( 'woocommerce_package_rates', 'kanssani_hide_other_shipping_methods', 100 );
 if ( ! function_exists( 'kanssani_hide_other_shipping_methods' )) {
-    
+
     function kanssani_hide_other_shipping_methods( $rates ) {
         $free = array();
         foreach ( $rates as $rate_id => $rate ) {
@@ -266,7 +271,7 @@ if ( ! function_exists( 'kanssani_hide_other_shipping_methods' )) {
  */
 add_action( 'woocommerce_after_shipping_rate', 'kanssani_shipping_method_notes', 10, 2 );
 if ( ! function_exists( 'kanssani_shipping_method_notes' ) ) {
-    
+
     function kanssani_shipping_method_notes( $method, $index ) {
         echo '<div class="shipping_method_notes '. $method->method_id .'">';
         switch ($method->method_id) {
@@ -298,7 +303,7 @@ if ( ! function_exists( 'kanssani_shipping_method_notes' ) ) {
 }
 
 /**
- * Change payment gateway icon 
+ * Change payment gateway icon
  */
 add_filter( 'woocommerce_gateway_icon', 'kanssani_gateway_icon', 10, 2 );
 if ( ! function_exists( 'kanssani_gateway_icon' ) ) {
